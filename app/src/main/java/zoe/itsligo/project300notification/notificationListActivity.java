@@ -1,5 +1,7 @@
 package zoe.itsligo.project300notification;
 
+
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -26,8 +28,8 @@ public class notificationListActivity extends AppCompatActivity {
     String value;
     Button deleteButton;
 
-
-
+    String Ctag;
+    String Cnumber;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +41,8 @@ public class notificationListActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             value = extras.getString("alert1");
+            Ctag = extras.getString("Ctag");
+            Cnumber = extras.getString("Cnumber");
             //The key argument here must match that used in the other activity
         }
 
@@ -77,27 +81,44 @@ public class notificationListActivity extends AppCompatActivity {
 
                     //   dismissNotification(notificationListActivity.this,1);
 
-                    NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                    //   NotificationManager notificationManager = getSystemService(NotificationManager.class);
 
                     // NotificationChannel channel = new NotificationChannel("channelID", channelID1, important);
-                   // notificationManager.cancel("channelID", 200);
-                    cancelNotification(200,"channelID");
+                    // notificationManager.cancel("channelID", 200);
+                    //  cancelNotification(200,"c1");
                     // handleActionDismiss();
+
+                   /* NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    notificationManager.cancel(Ctag, Integer.parseInt(Cnumber)); */
+
+                    removeNotification(Ctag, Integer.parseInt(Cnumber));
 
                     return false;
                 }
             }
         });
     }
-        public void cancelNotification(int id, String tag)
+        /*public void cancelNotification(int id, String tag)
         {
             //you can get notificationManager like this:
             //notificationManage r= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             //you can get notificationManager like this:
             NotificationManager notificationManager= (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.cancel(tag, id);
+        } */
+
+    private void removeNotification(String tag,int id) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            {
+                Toast.makeText(this, "made it here", Toast.LENGTH_SHORT).show();
+                NotificationManager notificationManager = getSystemService(NotificationManager.class);
+                notificationManager.cancelAll();
+
+            }
         }
     }
+}
+
 
 
   /*  public static void dismissNotification(Context ctx, int groupId) {

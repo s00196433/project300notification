@@ -28,6 +28,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener {
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     int month1;
     int year1;
 
+    int Rnum;
+
     private TextView descInput;
     private TextView mDisplayDate;
     private TextView mDisplayTime;
@@ -52,8 +56,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     public static final int channelID1no = 200;
     public static String channelDescription1 = null;
     public static final String moduleTitle = "RAD";*/
-    public static String channelDescription1 = null;
-    public static final String moduleTitle = "RAD";
+  //  public static String channelDescription1 = null;
+   // public static final String moduleTitle = "RAD";
     //public static final int NOTIFICATION_ID = 200;
 
     //private static final String TAG = "YourNotification";
@@ -65,8 +69,15 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
     int  lastScore, best1,best2,best3,best4,best5;
 
 
+    //public static String ModuleCtag ;
+    public static String Cdescription ;
+    public static String Ctag ;
+    public static String Cnumber ;
+   // public static String Moduale ;
+/*----------------------------------------------------
     public static String Ctag = "c1";
     public static String Cnumber = "200";
+ ----------------------------------------------------*/
 
 
    // public static CharSequence Ctag = "c1";
@@ -110,7 +121,8 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         });
 
 
-        createNotificationChannel();
+       // createNotificationChannel();
+        ChannelNumber();
 
 
         timeB = (Button) findViewById(R.id.TimeButton);
@@ -141,21 +153,28 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
             }
         };
 
-
+        //button1 :
         Button setReminder = (Button) findViewById(R.id.NotifyButton);
         setReminder.setOnClickListener(v -> {
 
             String name =  descInput.getText().toString();
-
-                channelDescription1 = name;
-                Toast.makeText(this, channelDescription1, Toast.LENGTH_SHORT).show();
+            Ctag = "button1-module1";
+                Cdescription = name;
+                Toast.makeText(this, Cdescription, Toast.LENGTH_SHORT).show();
                 TimeCheck();
 
 
         });
 
+        //button2 :
         Button setReminder2 = (Button) findViewById(R.id.Notify2Button);
         setReminder2.setOnClickListener(v -> {
+
+            Ctag = "button2-module2";
+            String name =  descInput.getText().toString();
+            Cdescription = name;
+            Toast.makeText(this, Cdescription, Toast.LENGTH_SHORT).show();
+
 
             TimeCheck();
 
@@ -234,21 +253,52 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
                     AlarmManager.INTERVAL_DAY, pendingIntent);
 
             //activity link
+            createNotificationChannel();
 
-            String notification = moduleTitle +"   "+ NotifiTime +"   "+ NotifiDate;
+            String notification =  Ctag  +"   "+ NotifiTime +"   "+ NotifiDate + "  "+Cnumber;
+
             Intent i = new Intent(MainActivity.this, notificationListActivity.class);
             i.putExtra("alert1",notification);
+            i.putExtra("Ctag",Ctag);
+            i.putExtra("Cnumber",Cnumber);
+
             startActivity(i);
 
         }
     }
 
-   /*public void channelDetails() {
+    public void ChannelNumber() {
+        HashSet hs=new HashSet();
+        while(hs.size()<1){
+            int num=(int)(Math.random()*10000);
+            Object Rnumbers = null;
+            hs.add(num);
+            Iterator it=hs.iterator();
+            while(it.hasNext()) {
+
+                Rnumbers = it.next();
+            }
+            int Rnum = (Integer) Rnumbers;
+            channelDetails(Rnum);
+
+        }
+    }
+
+  /*  Iterator it=hs.iterator();
+
+while(it.hasNext()) {
+
+    System.out.println(it.next()); */
+
+
+   public void channelDetails(int num) {
 
        Ctag = "c1";
-       Cnumber = "200";
-
-    } */
+       //Cnumber = "200";
+       Cnumber = String.valueOf(num);
+       TimeCheck();
+      // createNotificationChannel();
+    }
 
 
     private void createNotificationChannel() {
@@ -258,15 +308,16 @@ public class MainActivity extends AppCompatActivity implements TimePickerDialog.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
            // CharSequence name = channelID1;
           //  String description = "Channel for Project300  reminder";
-            notificationClass[] notificationList;
+         //   notificationClass[] notificationList;
 
-                int important = NotificationManager.IMPORTANCE_DEFAULT;
+
+            int important = NotificationManager.IMPORTANCE_DEFAULT;
           // NotificationChannel channel = new NotificationChannel("c1.notificationNumber",c1.notificationTag,important);
           // NotificationChannel channel = new NotificationChannel( "TAG",NOTIFICATION_ID,important);
 
             NotificationChannel channel = new NotificationChannel(Cnumber,Ctag,important);
 
-            channel.setDescription(channelDescription1);
+            channel.setDescription(Cdescription);
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);

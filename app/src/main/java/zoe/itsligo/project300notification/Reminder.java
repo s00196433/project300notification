@@ -19,8 +19,10 @@ public class Reminder extends BroadcastReceiver {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, String.valueOf(cat))
         .setSmallIcon(R.drawable.ic_add_alert_balck_24dp)
-        .setContentTitle(MainActivity.moduleTitle)
-        .setContentText(MainActivity.channelDescription1)
+        /*.setContentTitle(MainActivity.moduleTitle)
+        .setContentText(MainActivity.channelDescription1)*/
+        .setContentTitle(MainActivity.Ctag)
+        .setContentText(MainActivity.Cdescription)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context);
